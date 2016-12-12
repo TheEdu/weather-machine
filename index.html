@@ -24,7 +24,7 @@
 <script type="text/javascript">
 	$.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Zarate&appid=b68c88a85f2eb8f95c555469cce395aa&callback=?",function(jsonp){
 		console.log("jsonp");
-		console.log(jsonp);
+		console.log(jsonp["weather"][0]["main"]);
 	});
 </script>
 </html>
