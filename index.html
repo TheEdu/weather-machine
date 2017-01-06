@@ -16,15 +16,194 @@
 	<!-- font-awesome -->
 	<link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
 </head>
+
+<style type="text/css">
+
+	body{
+		background-color: #111;
+		/*background: linear-gradient(blue, white);
+		background-image: url("http://www.wallpapersxl.com/wallpapers/800x600/sky-with-cloud-and-birds/339460/sky-with-cloud-and-birds-bay-beautiful-reflecting-ocean-hills-clouds-nature-oceans-339460.jpg");*/
+		background-repeat: no-repeat;
+		background-position: center;
+	    background-size: cover;
+	    width: 100%;
+	    height: 100%;
+	}
+
+
+	#data-container{
+	    width:180px;
+	    height:200px;
+	    color:#FFF;
+	    font-family: 'Roboto';
+	    font-size: 25px;
+	    font-weight: capitalize;
+	    margin:auto;
+
+	}
+
+
+	#titulo{
+		text-align: center;
+		color: #FFF;
+		font-family: 'Roboto';
+		font-size: 55px;
+		margin-bottom: 80px;
+		margin-top: 40px;
+
+	}
+
+	#iconoTiempo{
+		width: 90px;
+		height: 90px;
+	}
+
+	a{
+		color:#07306E;
+		font-weight: bold;
+	}
+
+
+	@media (max-width: 350px) {
+		#titulo{
+			font-size: 40px;
+			margin-bottom: 40px;
+		}
+
+
+	}
+
+		@media (max-width: 250px) {
+		body{
+			background-size: auto;
+		}
+
+		
+	}
+
+
+
+</style>
+
 <body>
-	<div id="test" class="container-fluid">
+	<div id="main" class="container-fluid">
+
+		<div>
+			<h1 id="titulo">Weather App</h1>
+		</div>
+
+			
+		<div id="data-container">	
+			<div id="ciudad" class="text-center"></div> 
+			<div id="tiempo" class="text-center"></div> 
+			<div id="descripcion" class="text-center"></div>
+			<div class="row">
+				<div id="temperatura" class=" col-xs-6" style="padding:0px;text-align: -webkit-right;"></div>
+				<div class="col-xs-6"> <a id="anchorCelsius" href="#">°C</a><a id="anchorKelvin" href="#">°K</a></div>
+			</div>
+			<div class="text-center"><img id="iconoTiempo" src=""></div> 
+			
+		</div> 
+
 	</div>
 </body>
 
 <script type="text/javascript">
-	$.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Zarate&appid=b68c88a85f2eb8f95c555469cce395aa&callback=?",function(jsonp){
-		console.log("jsonp");
-		console.log(jsonp["weather"][0]["main"]);
+	
+	$("#anchorCelsius").click(function(){
+		//console.log("hola");
+		$(this).hide();
+		$("#temperatura").html(Math.trunc($("#temperatura").data("temp-kelvin")));
+		$("#anchorKelvin").show();
 	});
+
+	$("#anchorKelvin").click(function(){
+		//console.log("hola");
+		$(this).hide();
+		$("#temperatura").html(Math.trunc($("#temperatura").data("temp-celsius")));
+		$("#anchorCelsius").show();
+	});
+
+
+
+	$(document).ready(function() {
+		$("#anchorKelvin").hide();
+	});
+
+
+	$.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Zarate&appid=b68c88a85f2eb8f95c555469cce395aa&callback=?",function(jsonp){
+
+
+		var idTiempo = jsonp.weather[0].id;
+		var urlImg = "";
+
+		switch(true) {
+		    case idTiempo>=200 && idTiempo<300:
+		        urlImg = "weather-images/200.jpg";
+		    	$('body').css('background-image', 'url("' + urlImg + '")');
+		        break;
+		    case idTiempo>=300 && idTiempo<400:
+		        urlImg = "weather-images/300jpg";
+		    	$('body').css('background-image', 'url("' + urlImg + '")');
+		        break;
+
+		    case idTiempo>=500 && idTiempo<600:
+		        urlImg = "weather-images/500jpg";
+		    	$('body').css('background-image', 'url("' + urlImg + '")');
+		        break;
+
+		    case idTiempo>=600 && idTiempo<700:
+		        urlImg = "weather-images/600.jpg";
+		    	$('body').css('background-image', 'url("' + urlImg + '")');
+		        break;
+
+		    case idTiempo>=700 && idTiempo<800:
+		        urlImg = "weather-images/700.jpg";
+		    	$('body').css('background-image', 'url("' + urlImg + '")');
+		        break;
+
+		    case idTiempo==800:
+		    	urlImg = "weather-images/800.jpg";
+		    	$('body').css('background-image', 'url("' + urlImg + '")');
+		        break;
+
+		    case idTiempo>800 && idTiempo<900:
+		        urlImg = "weather-images/8XX.jpg";
+		    	$('body').css('background-image', 'url("' + urlImg + '")');
+		        break;
+
+		    case idTiempo>=900 && idTiempo<1000:
+		        urlImg = "weather-images/900.jpg";
+		    	$('body').css('background-image', 'url("' + urlImg + '")');
+		        break;
+
+		    default:
+		    	urlImg = "weather-images/default.jpg";
+		    	$('body').css('background-image', 'url("' + urlImg + '")');
+		        console.log("preuba switch raro");
+		}
+
+
+		//$("#data-container").html(jsonp.name + "<br>" + jsonp.weather[0].main);
+		$("#ciudad").html(jsonp.name);
+		$("#tiempo").html(jsonp.weather[0].main);
+		$("#temperatura").html(jsonp.main.temp-273.15);
+		$("#temperatura").data("temp-kelvin", jsonp.main.temp);
+		$("#temperatura").data("temp-celsius", jsonp.main.temp-273.15);
+		$("#descripcion").html(jsonp.weather[0].description);
+		$("#iconoTiempo").attr("src","http://openweathermap.org/img/w/"+jsonp.weather[0].icon+".png");
+		console.log(jsonp);
+		console.log(jsonp.name);
+		console.log(jsonp.weather[0].main);
+		console.log(jsonp.main.temp);
+		//console.log(jsonp.main.temp_max);
+		//console.log(jsonp.main.temp_min);
+		console.log(jsonp.weather[0].id);
+		console.log("http://openweathermap.org/img/w/"+jsonp.weather[0].icon+".png");
+		console.log(jsonp.weather[0].description);
+	});
+
+
+
 </script>
 </html>
