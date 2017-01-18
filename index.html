@@ -131,6 +131,8 @@
 	});
 
 
+
+
 	$.getJSON("http://api.openweathermap.org/data/2.5/weather?q=Zarate&appid=b68c88a85f2eb8f95c555469cce395aa&callback=?",function(jsonp){
 
 
@@ -180,11 +182,9 @@
 		    default:
 		    	urlImg = "weather-images/default.jpg";
 		    	$('body').css('background-image', 'url("' + urlImg + '")');
-		        console.log("preuba switch raro");
 		}
 
 
-		//$("#data-container").html(jsonp.name + "<br>" + jsonp.weather[0].main);
 		$("#ciudad").html(jsonp.name);
 		$("#tiempo").html(jsonp.weather[0].main);
 		$("#temperatura").html(jsonp.main.temp-273.15);
