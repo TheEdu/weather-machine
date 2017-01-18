@@ -17,31 +17,40 @@
 	<link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
 	
 	<!-- angular -->
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
 </head>
 <body>
 
 	<div ng-app="myApp" ng-controller="myCtrl">
-		<div>{{myData}}</div>
+		<div>{{data}}</div>
 	</div>
 
 	<script>
+
+		//var url = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=Zarate&callback=JSON_CALLBACK";
+
+
 		var app = angular.module('myApp', [])
 
 		app.config(function($sceDelegateProvider) {
 		    $sceDelegateProvider.resourceUrlWhitelist([
-		        'http://api.openweathermap.org/**'
+		        'https://api.apixu.com/**'
 		    ]);
 		});
 
 		app.controller('myCtrl', function($scope, $http) {
 
-			$http.jsonp("http://api.openweathermap.org/data/2.5/weather?q=Zarate&appid=b68c88a85f2eb8f95c555469cce395aa&callback=JSON_CALLBACK")
-			    .success(function(data){
-			        console.log(data);
-			        $scope.myData = data;
-			    });
-   		});
+
+			$http({method: "GET", url: "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=Zarate"}).
+			        then(function(response) {
+			          $scope.status = response.status;
+			          $scope.data = response.data;
+			        }, function(response) {
+			          $scope.data = response.data || 'Request failed';
+			          $scope.status = response.status;
+			      });
+
+		});
 	</script>
 
 </body>
