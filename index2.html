@@ -4,6 +4,7 @@
 	<link rel="icon" href="favicon-codepen.ico">
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -22,36 +23,35 @@
 <body>
 
 	<div ng-app="myApp" ng-controller="myCtrl">
-		<div>{{data}}</div>
+		<div ng-bind="data.location.name"></div>
+		<div ng-bind="data.current.condition.text"></div>
+		<div ng-bind="data.current.temp_c"></div>
+		<div> <img ng-src="https:{{data.current.condition.icon}}"> </div>	
 	</div>
 
-	<script>
-
-		//var url = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=Zarate&callback=JSON_CALLBACK";
-
-
-		var app = angular.module('myApp', [])
-
-		app.config(function($sceDelegateProvider) {
-		    $sceDelegateProvider.resourceUrlWhitelist([
-		        'https://api.apixu.com/**'
-		    ]);
-		});
-
-		app.controller('myCtrl', function($scope, $http) {
-
-
-			$http({method: "GET", url: "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=Zarate"}).
-			        then(function(response) {
-			          $scope.status = response.status;
-			          $scope.data = response.data;
-			        }, function(response) {
-			          $scope.data = response.data || 'Request failed';
-			          $scope.status = response.status;
-			      });
-
-		});
-	</script>
-
 </body>
+
+<script>
+
+	var app = angular.module('myApp', [])
+
+	app.config(function($sceDelegateProvider) {
+	    $sceDelegateProvider.resourceUrlWhitelist([
+	        'https://api.apixu.com/**'
+	    ]);
+	});
+
+	app.controller('myCtrl', function($scope, $http) {
+		$http({method: "GET", url: "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=Zarate"}).
+		        then(function(response) {
+		          $scope.status = response.status;
+		          $scope.data = response.data;
+		        }, function(response) {
+		          $scope.data = response.data || 'Request failed';
+		          $scope.status = response.status;
+		      });
+	});
+
+</script>
+
 </html>
