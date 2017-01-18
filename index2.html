@@ -22,16 +22,24 @@
 <body>
 
 	<div ng-app="myApp" ng-controller="myCtrl">
-		<div ng-bing=""></div>
+		<div>{{myData}}</div>
 	</div>
 
 	<script>
 		var app = angular.module('myApp', [])
+
+		app.config(function($sceDelegateProvider) {
+		    $sceDelegateProvider.resourceUrlWhitelist([
+		        'http://api.openweathermap.org/**'
+		    ]);
+		});
+
 		app.controller('myCtrl', function($scope, $http) {
 
 			$http.jsonp("http://api.openweathermap.org/data/2.5/weather?q=Zarate&appid=b68c88a85f2eb8f95c555469cce395aa&callback=JSON_CALLBACK")
 			    .success(function(data){
 			        console.log(data);
+			        $scope.myData = data;
 			    });
    		});
 	</script>
