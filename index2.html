@@ -19,15 +19,23 @@
 	
 	<!-- angular -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+
+	<!-- contador de visitas-->
+	<script type="text/javascript" src="http://counter2.01counter.com/private/countertab.js?c=f1e05c9616b8cf523b2a43b29a9e38c5"></script>
 </head>
 <body>
 
 	<div ng-app="myApp" ng-controller="myCtrl">
 		<div ng-bind="data.location.name"></div>
 		<div ng-bind="data.current.condition.text"></div>
-		<div ng-bind="data.current.temp_c"></div>
+		<div class="row">
+			<div ng-bind="data.current.temp_c" class="col-xs-6"></div>
+			<div class="col-xs-6"> <a id="anchorCelsius" href="#">°C</a><a id="anchorKelvin" href="#">°K</a></div>
+		</div>
 		<div> <img ng-src="https:{{data.current.condition.icon}}"> </div>	
 	</div>
+
+<a href="http://www.contadorvisitasgratis.com" title="contador de visitas html"><img src="http://counter2.01counter.com/private/contadorvisitasgratis.php?c=f1e05c9616b8cf523b2a43b29a9e38c5" border="0" title="contador de visitas html" alt="contador de visitas html"></a>
 
 </body>
 
