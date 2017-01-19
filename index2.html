@@ -21,7 +21,8 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 
 	<!-- contador de visitas-->
-	<script type="text/javascript" src="http://counter2.01counter.com/private/countertab.js?c=9b3873bc7ca2bab07321639ac3361314"></script>
+	<script type="text/javascript" src="http://counter2.01counter.com/private/countertab.js?c=86800326271458e8a05ef8dd79debd44"></script>
+        
 	        
 		        
 
@@ -32,13 +33,17 @@
 			color: #FFF;
 			font-family: 'Roboto';
 			text-align: center;
+			background-image: url("http://wallpapercave.com/wp/qQa5Pd7.jpg");
+			background-repeat: no-repeat;
+			background-position: center;
+	    	background-size: cover;
 		}
 
 		#titulo{
 
 			font-size: 50px;
 			margin-bottom: 90px;
-			margin-top: 40px;
+			margin-top: 30px;
 
 		}
 
@@ -46,8 +51,9 @@
 		#clima-container{
 		    width:180px;
 		    height:200px;
-		    font-size: 25px;
+		    font-size: 30px;
 		    font-weight: capitalize;
+
 		    margin:auto;
 		}
 
@@ -69,6 +75,19 @@
 		#iconoTiempo{
 			width: 90px;
 			height: 90px;
+		}
+
+		a{
+			color:#07306E;
+			color:#0ff;
+			font-weight: bold;
+		}
+
+		@media (max-width: 300px) {
+			#titulo{
+				font-size: 40px;
+				margin-bottom: 40px;
+			}
 		}
 
 	</style>
@@ -97,7 +116,7 @@
 	</div>
 
 	<div id="contador-visitas">
-		<a href="http://www.contadorvisitasgratis.com" title="contador de visitas para web"><img src="http://counter2.01counter.com/private/contadorvisitasgratis.php?c=9b3873bc7ca2bab07321639ac3361314" border="0" title="contador de visitas para web" alt="contador de visitas para web"></a>
+		<a href="http://www.contadorvisitasgratis.com" title="contadores de visita"><img src="http://counter2.01counter.com/private/contadorvisitasgratis.php?c=86800326271458e8a05ef8dd79debd44" border="0" title="contadores de visita" alt="contadores de visita"></a>
     </div>
 
 
@@ -110,8 +129,8 @@
 	app.config(function($sceDelegateProvider) {
 	    $sceDelegateProvider.resourceUrlWhitelist([
 	        'https://api.apixu.com/**',
-	        'https://whateverorigin.herokuapp.com/**',
-	        'https://api.ipify.org/?format=json'
+	        //'https://whateverorigin.herokuapp.com/**',
+	        'https://ip.nf/me.json'
 	    ]);
 	});
 
