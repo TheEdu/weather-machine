@@ -370,19 +370,19 @@
 		        $scope.urlToConsult = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.cityToConsult;
 
 		        console.log($scope.urlToConsult);
-		        $http({method: "GET", url: $scope.urlToConsult}).
-		        then(function(response) {
-		          $scope.status = response.status;
-		          $scope.data = response.data;
-		          $scope.celsius = $scope.data.current.temp_c
-		          $("#nubeLoading").addClass("hide");
-		          $("#clima-container").removeClass("hide");
-		          //$scope.consultaExitosa = true;
-		        }, function(response) {
-		          $scope.data = response.data || 'Request failed';
-		          $scope.status = response.status;
-		          $("#problemaConsultarClima").removeClass("hide");
-		      });
+			        $http({method: "GET", url: $scope.urlToConsult})
+				        .then(function(response) {
+				          $scope.status = response.status;
+				          $scope.data = response.data;
+				          $scope.celsius = response.data.current.temp_c;
+				          $("#nubeLoading").addClass("hide");
+				          $("#clima-container").removeClass("hide");
+				          //$scope.consultaExitosa = true;
+				        }, function(response) {
+				          $scope.data = response.data || 'Request failed';
+				          $scope.status = response.status;
+				          $("#problemaConsultarClima").removeClass("hide");
+				    });
 
 		    });
 
