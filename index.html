@@ -374,7 +374,7 @@
 				        .then(function(response) {
 				          $scope.status = response.status;
 				          $scope.data = response.data;
-				          $scope.celsius = response.data.current.temp_c;
+				          //$scope.celsius = response.data.current.temp_c;
 				          $("#nubeLoading").addClass("hide");
 				          $("#clima-container").removeClass("hide");
 				          //$scope.consultaExitosa = true;
@@ -390,6 +390,7 @@
 
 		$scope.mostrarCOcultarK = true;
 		$scope.cambiarAFahrenheit  = function(){
+			$scope.celsius = $scope.data.current.temp_c;
 			$scope.data.current.temp_c = Math.trunc((9/5)*($scope.celsius ) + 32);
 			$scope.mostrarCOcultarK = !($scope.mostrarCOcultarK);
 		};
