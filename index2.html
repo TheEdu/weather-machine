@@ -21,21 +21,78 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
 
 	<!-- contador de visitas-->
-	<script type="text/javascript" src="http://counter2.01counter.com/private/countertab.js?c=f1e05c9616b8cf523b2a43b29a9e38c5"></script>
+	<script type="text/javascript" src="http://counter2.01counter.com/private/countertab.js?c=9b3873bc7ca2bab07321639ac3361314"></script>
+	        
+		        
+
+	<style type="text/css">
+
+		body{
+			background-color: #111;
+		}
+
+		#titulo{
+			text-align: center;
+			color: #FFF;
+			font-family: 'Roboto';
+			font-size: 50px;
+			margin-bottom: 90px;
+			margin-top: 40px;
+
+		}
+
+
+		#clima-container{
+		    width:180px;
+		    height:200px;
+		    color:#FFF;
+		    font-family: 'Roboto';
+		    font-size: 25px;
+		    text-align: center;
+		    font-weight: capitalize;
+		    margin:auto;
+		}
+
+		#temperatura{
+			padding: 0;
+			text-align: right;
+		}
+
+		#unidadTemp{
+			text-align: left;
+		}
+
+		#contador-visitas{
+			position: fixed;
+		    bottom: 0;
+		    right: 0;
+		}
+
+	</style>
+
 </head>
 <body>
+	<div class="container-fluid">
 
-	<div ng-app="myApp" ng-controller="myCtrl">
-		<div ng-bind="data.location.name"></div>
-		<div ng-bind="data.current.condition.text"></div>
-		<div class="row">
-			<div ng-bind="data.current.temp_c" class="col-xs-6"></div>
-			<div class="col-xs-6"> <a id="anchorCelsius" href="#">°C</a><a id="anchorKelvin" href="#">°K</a></div>
+		<div>
+			<h1 id="titulo">Weather App</h1>
 		</div>
-		<div> <img ng-src="https:{{data.current.condition.icon}}"> </div>	
+
+		<div id="clima-container" ng-app="myApp" ng-controller="myCtrl">
+			<div ng-bind="data.location.name"></div>
+			<div ng-bind="data.current.condition.text"></div>
+			<div class="row">
+				<div id="temperatura" ng-bind="data.current.temp_c" class="col-xs-6"></div>
+				<div id="unidadTemp" class="col-xs-6"> <a id="anchorCelsius" href="#">°C</a><a id="anchorKelvin" href="#" class="hide">°K</a></div>
+			</div>
+			<div> <img ng-src="https:{{data.current.condition.icon}}"> </div>	
+		</div>
+
 	</div>
 
-<a href="http://www.contadorvisitasgratis.com" title="contador de visitas html"><img src="http://counter2.01counter.com/private/contadorvisitasgratis.php?c=f1e05c9616b8cf523b2a43b29a9e38c5" border="0" title="contador de visitas html" alt="contador de visitas html"></a>
+	<div id="contador-visitas">
+		<a href="http://www.contadorvisitasgratis.com" title="contador de visitas para web"><img src="http://counter2.01counter.com/private/contadorvisitasgratis.php?c=9b3873bc7ca2bab07321639ac3361314" border="0" title="contador de visitas para web" alt="contador de visitas para web"></a>
+    </div>
 
 </body>
 
