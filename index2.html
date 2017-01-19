@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
 	
 	<!-- angular -->
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 
 	<!-- contador de visitas-->
 	<script type="text/javascript" src="http://counter2.01counter.com/private/countertab.js?c=9b3873bc7ca2bab07321639ac3361314"></script>
@@ -29,12 +29,13 @@
 
 		body{
 			background-color: #111;
+			color: #FFF;
+			font-family: 'Roboto';
+			text-align: center;
 		}
 
 		#titulo{
-			text-align: center;
-			color: #FFF;
-			font-family: 'Roboto';
+
 			font-size: 50px;
 			margin-bottom: 90px;
 			margin-top: 40px;
@@ -45,10 +46,7 @@
 		#clima-container{
 		    width:180px;
 		    height:200px;
-		    color:#FFF;
-		    font-family: 'Roboto';
 		    font-size: 25px;
-		    text-align: center;
 		    font-weight: capitalize;
 		    margin:auto;
 		}
@@ -66,6 +64,11 @@
 			position: fixed;
 		    bottom: 0;
 		    right: 0;
+		}
+
+		#iconoTiempo{
+			width: 90px;
+			height: 90px;
 		}
 
 	</style>
@@ -88,7 +91,7 @@
 					<a id="anchorKelvin"  ng-click="cambiarACelsius()" ng-hide="mostrarCOcultarK" href="#">°K</a>
 				</div>
 			</div>
-			<div> <img ng-src="https:{{data.current.condition.icon}}"> </div>	
+			<div> <img id="iconoTiempo" ng-src="https:{{data.current.condition.icon}}"> </div>	
 		</div>
 
 	</div>
@@ -96,6 +99,7 @@
 	<div id="contador-visitas">
 		<a href="http://www.contadorvisitasgratis.com" title="contador de visitas para web"><img src="http://counter2.01counter.com/private/contadorvisitasgratis.php?c=9b3873bc7ca2bab07321639ac3361314" border="0" title="contador de visitas para web" alt="contador de visitas para web"></a>
     </div>
+
 
 </body>
 
@@ -105,13 +109,33 @@
 
 	app.config(function($sceDelegateProvider) {
 	    $sceDelegateProvider.resourceUrlWhitelist([
-	        'https://api.apixu.com/**'
+	        'https://api.apixu.com/**',
+	        'https://whateverorigin.herokuapp.com/**',
+	        'https://api.ipify.org/?format=json'
 	    ]);
 	});
 
 	app.controller('myCtrl', function($scope, $http) {
-		$scope.mostrarCOcultarK = true;
-		$http({method: "GET", url: "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=Zarate"}).
+
+		/*
+		var urlC = "https://whateverorigin.herokuapp.com/get?url=" + 
+	               encodeURIComponent("http://ip-api.com/json/181.166.98.222")+"&callback=JSON_CALLBACK";
+		$http.jsonp(urlC)
+		    .success(function(data){
+		        console.log(data);
+		    });
+		*/
+
+
+		$scope.getIpUrl = "https://ip.nf/me.json";
+
+		$http.get($scope.getIpUrl)
+		    .success(function(ipData){
+		    	$scope.cityToConsult = ipData.ip.city;
+		        $scope.urlToConsult = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.cityToConsult;
+
+		        console.log($scope.urlToConsult);
+		        $http({method: "GET", url: $scope.urlToConsult}).
 		        then(function(response) {
 		          $scope.status = response.status;
 		          $scope.data = response.data;
@@ -120,6 +144,12 @@
 		          $scope.data = response.data || 'Request failed';
 		          $scope.status = response.status;
 		      });
+
+		    });
+
+
+
+		$scope.mostrarCOcultarK = true;
 		$scope.cambiarAKelvin = function(){
 			$scope.data.current.temp_c = $scope.data.current.temp_c + 273;
 			$scope.mostrarCOcultarK = !($scope.mostrarCOcultarK);
