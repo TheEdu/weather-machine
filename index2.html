@@ -83,7 +83,10 @@
 			<div ng-bind="data.current.condition.text"></div>
 			<div class="row">
 				<div id="temperatura" ng-bind="data.current.temp_c" class="col-xs-6"></div>
-				<div id="unidadTemp" class="col-xs-6"> <a id="anchorCelsius" href="#">°C</a><a id="anchorKelvin" href="#" class="hide">°K</a></div>
+				<div id="unidadTemp" class="col-xs-6"> 
+					<a id="anchorCelsius" ng-click="cambiarAKelvin()" ng-show="mostrarCOcultarK" href="#">°C</a>
+					<a id="anchorKelvin"  ng-click="cambiarACelsius()" ng-hide="mostrarCOcultarK" href="#">°K</a>
+				</div>
 			</div>
 			<div> <img ng-src="https:{{data.current.condition.icon}}"> </div>	
 		</div>
@@ -107,14 +110,25 @@
 	});
 
 	app.controller('myCtrl', function($scope, $http) {
+		$scope.mostrarCOcultarK = true;
 		$http({method: "GET", url: "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=Zarate"}).
 		        then(function(response) {
 		          $scope.status = response.status;
 		          $scope.data = response.data;
+		          $scope.data.current.temp_c = Math.trunc($scope.data.current.temp_c);
 		        }, function(response) {
 		          $scope.data = response.data || 'Request failed';
 		          $scope.status = response.status;
 		      });
+		$scope.cambiarAKelvin = function(){
+			$scope.data.current.temp_c = $scope.data.current.temp_c + 273;
+			$scope.mostrarCOcultarK = !($scope.mostrarCOcultarK);
+		};
+		$scope.cambiarACelsius = function(){
+			$scope.data.current.temp_c = $scope.data.current.temp_c - 273;
+			$scope.mostrarCOcultarK = !($scope.mostrarCOcultarK);
+		};
+
 	});
 
 </script>
