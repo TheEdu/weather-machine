@@ -29,13 +29,12 @@
 		@import "compass/css3";
 
 		.preloader {
-			position: absolute;
-			margin-left: -55px;
-			margin-top: -100px;
+
+			margin:auto;
 			height: 110px;
 			width: 110px;
-			left: 50%;
-			top: 40%;
+
+
 		}
 
 		svg {
@@ -59,18 +58,12 @@
 		}
 
 		#sun {
-		  margin-left: -10px;
-		  margin-top: 6px;
-		  opacity: 0;
+
 		  width: 60px;
 		  height: 60px;
-		  position: absolute;
-		  left: 45px;
-		  top: 15px;
-		  z-index: 1;
 		  
 		  animation-name: rotate;
-		  animation-duration: 16000ms;
+		  animation-duration: 8000ms;
 		  animation-iteration-count: infinite;
 		  animation-timing-function: linear;
 		}
@@ -344,24 +337,13 @@
 	app.config(function($sceDelegateProvider) {
 	    $sceDelegateProvider.resourceUrlWhitelist([
 	        'https://api.apixu.com/**',
-	        //'https://whateverorigin.herokuapp.com/**',
+	        'https://whateverorigin.herokuapp.com/**',
 	        'https://ip.nf/me.json'
 	    ]);
 	});
 
 	app.controller('myCtrl', function($scope, $http) {
 
-		/*
-		var urlC = "https://whateverorigin.herokuapp.com/get?url=" + 
-	               encodeURIComponent("http://ip-api.com/json/181.166.98.222")+"&callback=JSON_CALLBACK";
-		$http.jsonp(urlC)
-		    .success(function(data){
-		        console.log(data);
-		    });
-		*/
-
-		//$("#clima-container").hide();
-		//$scope.consultaExitosa = false;
 		$scope.getIpUrl = "https://ip.nf/me.json";
 
 		$http.get($scope.getIpUrl)
