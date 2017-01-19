@@ -216,7 +216,14 @@
 		    height:200px;
 		    font-size: 30px;
 		    font-weight: capitalize;
+		    margin:auto;
+		}
 
+		#problemaConsultarClima{
+			width:180px;
+		    height:200px;
+		    font-size: 30px;
+		    font-weight: capitalize;
 		    margin:auto;
 		}
 
@@ -278,6 +285,8 @@
 		</div>
 
 	</div>
+
+	<div id="problemaConsultarClima" class="hide">The query could not be performed</div>
 
 	<!-- Animacion de carga-->
 	<div id="nubeLoading" class="preloader" style="opacity: 1; ">
@@ -372,6 +381,7 @@
 		        }, function(response) {
 		          $scope.data = response.data || 'Request failed';
 		          $scope.status = response.status;
+		          $("#problemaConsultarClima").removeClass("hide");
 		      });
 
 		    });
