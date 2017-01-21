@@ -183,6 +183,14 @@
     <!-- Pagina principal-->
 	<style type="text/css">
 
+		input{
+			background: transparent;
+			width: 180px;
+			height: 45px;
+			text-align: center;
+			border-radius: 5px;
+		}
+
 		body{
 			background-color: #111;
 			color: #FFF;
@@ -261,7 +269,7 @@
 	<div class="container-fluid">
 
 		<div>
-			<h1 id="titulo">Weather App</h1>
+			<h1 id="titulo">Weather by IP</h1>
 		</div>
 
 		<div id="clima-container" ng-app="myApp" ng-controller="myCtrl" class="hide">
@@ -384,6 +392,9 @@
 				    });
 
 				/* de esta forma no le funca a mati(?
+
+
+				https://maps.googleapis.com/maps/api/geocode/json?latlng=-34.0629997253418,-59.0531005859375&key=AIzaSyBGhvrQh2edYQi7AXdDYCA71Lb_YehPXTk
 				
 				$scope.cityToConsult = ipData.ip.city;
 		        $scope.urlToConsult = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.cityToConsult;
@@ -416,6 +427,11 @@
 		$scope.cambiarACelsius = function(){
 			$scope.data.current.temp_c = $scope.celsius;
 			$scope.mostrarCOcultarK = !($scope.mostrarCOcultarK);
+		};
+
+		$scope.cambiarCiudad = function(){
+			$scope.weatherUrl = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.data.location.name;
+			console.log($scope.weatherUrl);
 		};
 
 	});
