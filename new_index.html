@@ -49,8 +49,7 @@
 		}
 
 		#cloud {
-		  position: relative;
-		  z-index: 2;
+		  margin-top: 60px;
 		}
 
 		#cloud path {
@@ -183,31 +182,6 @@
     <!-- Pagina principal-->
 	<style type="text/css">
 
-		.navbar{
-			border-radius: 0px;
-			margin-bottom: -50px;
-		}
-
-		.navbar-header {
-		    float: left;
-		    padding: 10px;
-		    text-align: center;
-		    width: 100%;
-		}
-		.navbar-text {
-			float:none;
-			font-family: 'Roboto';
-			font-size: 30px;
-			color:#FFF;
-		}
-
-		input{
-			background: transparent;
-			width: 180px;
-			height: 45px;
-			text-align: center;
-			border-radius: 5px;
-		}
 
 		.container-fluid{
 			height: 100%;
@@ -223,29 +197,20 @@
 	    	background-size: cover;
 		}
 
-		#titulo{
-
-			font-size: 50px;
-			margin-bottom: 90px;
-			margin-top: 30px;
+		.titulo{
+			font-size: 40px;
+			margin: 20px 0px;
 
 		}
 
 
-		#clima-container{
+		.container-mostrado{
 		    width:180px;
 		    height:200px;
 		    font-size: 30px;
 		    font-weight: capitalize;
 		    margin:auto;
-		}
-
-		#problemaConsultarClima{
-			width:180px;
-		    height:200px;
-		    font-size: 30px;
-		    font-weight: capitalize;
-		    margin:auto;
+		    margin-top: 75px;
 		}
 
 		#temperatura{
@@ -275,29 +240,37 @@
 			font-weight: bold;
 		}
 
-		@media (max-width: 300px) {
-			#titulo{
-				font-size: 40px;
-				margin-bottom: 40px;
+
+		#inputLocation,#inputLocationButton{
+			border-top: 0px 1px;
+			height: 45px;
+		}
+
+		#noAccessToGeoLocation{
+			margin-top: 125px; 
+		}
+
+		@media (max-width: 241px) {
+			.titulo{
+				font-size: 31px;
 			}
 		}
+
 	</style>
 
 
 </head>
 <body>
 
-	<nav class="navbar navbar-inverse" role="navigation">
-	  <div class="navbar-header">
-	    <p class="navbar-text">Brand</p>
-	  </div>
-	</nav>
-
 
 	<div class="container-fluid">
 
+		<div class="titulo">
+			<span>Weather App</span>
+		</div>
 
-		<div id="clima-container" ng-app="myApp" ng-controller="myCtrl" class="hide">
+
+		<div id="clima-container" ng-app="myApp" ng-controller="myCtrl" class="hide container-mostrado">
 			<div ng-bind="data.location.name"></div>
 			<div ng-bind="data.current.condition.text"></div>
 			<div class="row">
@@ -310,7 +283,18 @@
 			<div> <img id="iconoTiempo" ng-src="https:{{data.current.condition.icon}}"> </div>	
 		</div>
 
-		<div id="problemaConsultarClima" class="hide">The query could not be performed</div>
+		<div id="problemaConsultarClima" class="hide container-mostrado">The query could not be performed</div>
+		
+		<div id="noAccessToGeoLocation" class="hide container-mostrado">
+			<div class="input-group">
+			    <input id="inputLocation" type="text" class="form-control" placeholder="Location">
+			    <div class="input-group-btn">
+			      <button id="inputLocationButton" class="btn btn-default" type="submit">
+			        <i class="glyphicon glyphicon-search"></i>
+			      </button>
+			    </div>
+			</div>
+		</div>
 
 		<!-- Animacion de carga-->
 		<div id="nubeLoading" class="preloader" style="opacity: 1; ">
@@ -406,6 +390,8 @@
 			},function error(){
 				$scope.geolocationError = "Uppss";
 				console.log($scope.geolocationError);
+				$("#nubeLoading").addClass("hide");
+				$("#noAccessToGeoLocation").removeClass("hide");
 			});
 
 
