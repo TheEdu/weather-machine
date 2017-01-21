@@ -1,0 +1,433 @@
+<html>
+<head>
+	<title>Weather-Machine</title>
+	<link rel="icon" href="favicon-codepen.ico">
+	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- jquery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+	<!-- font-awesome -->
+	<link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+	
+	<!-- angular -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+	<!-- contador de visitas-->
+	<script type="text/javascript" src="http://counter2.01counter.com/private/countertab.js?c=86800326271458e8a05ef8dd79debd44"></script>
+        
+    <!-- Efecto de carga-->
+	<style type="text/css">   
+
+		@import "compass/css3";
+
+		.preloader {
+
+			margin:auto;
+			height: 110px;
+			width: 110px;
+
+
+		}
+
+		svg {
+		  width: 110px;
+		  height: 110px;
+		}
+
+		path {
+		  stroke: #9ea1a4;
+		  stroke-width: 0.25;
+		  fill: #241E20;
+		}
+
+		#cloud {
+		  position: relative;
+		  z-index: 2;
+		}
+
+		#cloud path {
+		  fill: #efefef;
+		}
+
+		#sun {
+
+		  width: 60px;
+		  height: 60px;
+		  
+		  animation-name: rotate;
+		  animation-duration: 8000ms;
+		  animation-iteration-count: infinite;
+		  animation-timing-function: linear;
+		}
+
+		#sun path {
+		  stroke: #FF0;
+		  stroke-width: 0.18;
+		  fill: #9ea1a4;
+		}
+
+
+		@keyframes rotate {
+		  0% {
+		    transform: rotateZ(0deg);
+		  }
+
+		  100% {
+		    transform: rotateZ(360deg);
+		  }
+		}
+
+		/* Rain */
+		.rain {
+		  position: absolute;
+		  width: 70px;
+		  height: 70px;
+		  margin-top: -32px;
+		  margin-left: 19px;
+		}
+
+		.drop {
+		  opacity: 1;
+		  background: #9ea1a4;
+		  background: #0CB7F2;
+		  display: block;
+		  float: left;
+		  width: 3px;
+		  height: 10px;
+		  margin-left: 4px;
+		  border-radius: 0px 0px 6px 6px;
+		  
+		  animation-name: drop;
+		  animation-duration: 350ms;
+		  animation-iteration-count: infinite;
+		}
+
+		.drop:nth-child(1) {
+		  animation-delay: -130ms;
+		}
+
+		.drop:nth-child(2) {
+		  animation-delay: -240ms;
+		}
+
+		.drop:nth-child(3) {
+		  animation-delay: -390ms;
+		}
+
+		.drop:nth-child(4) {
+		  animation-delay: -525ms;
+		}
+
+		.drop:nth-child(5) {
+		  animation-delay: -640ms;
+		}
+
+		.drop:nth-child(6) {
+		  animation-delay: -790ms;
+		}
+
+		.drop:nth-child(7) {
+		  animation-delay: -900ms;
+		}
+
+		.drop:nth-child(8) {
+		  animation-delay: -1050ms;
+		}
+
+		.drop:nth-child(9) {
+		  animation-delay: -1130ms;
+		}
+
+		.drop:nth-child(10) {
+		  animation-delay: -1300ms;
+		}
+
+
+		@keyframes drop {
+		  50% {
+		    height: 45px;
+		    opacity: 0;
+		  }
+
+		  51% {
+		    opacity: 0;
+		  }
+
+		  100% {
+		    height: 1px;
+		    opacity: 0;
+		  }
+		}
+
+		.text {
+			font-family: Helvetica, 'Helvetica Neue', sans-serif;
+			letter-spacing: 1px;
+			text-align: center;
+			margin-left: -43px;
+			font-weight: bold;
+			margin-top: 20px;
+			font-size: 17px;
+			color: #FFF;
+			width: 200px;
+		}
+	</style>        
+
+    <!-- Pagina principal-->
+	<style type="text/css">
+
+		.navbar{
+			border-radius: 0px;
+			margin-bottom: -50px;
+		}
+
+		.navbar-header {
+		    float: left;
+		    padding: 10px;
+		    text-align: center;
+		    width: 100%;
+		}
+		.navbar-text {
+			float:none;
+			font-family: 'Roboto';
+			font-size: 30px;
+			color:#FFF;
+		}
+
+		input{
+			background: transparent;
+			width: 180px;
+			height: 45px;
+			text-align: center;
+			border-radius: 5px;
+		}
+
+		.container-fluid{
+			height: 100%;
+			width: 100%;
+			background-color: #111;
+			color: #FFF;
+			font-family: 'Roboto';
+			text-align: center;
+			background-image: url("weather-images/weather-angular.jpg");
+			/* http://wallpapercave.com/wp/qQa5Pd7.jpg */
+			background-repeat: no-repeat;
+			background-position: center;
+	    	background-size: cover;
+		}
+
+		#titulo{
+
+			font-size: 50px;
+			margin-bottom: 90px;
+			margin-top: 30px;
+
+		}
+
+
+		#clima-container{
+		    width:180px;
+		    height:200px;
+		    font-size: 30px;
+		    font-weight: capitalize;
+		    margin:auto;
+		}
+
+		#problemaConsultarClima{
+			width:180px;
+		    height:200px;
+		    font-size: 30px;
+		    font-weight: capitalize;
+		    margin:auto;
+		}
+
+		#temperatura{
+			padding: 0;
+			text-align: right;
+		}
+
+		#unidadTemp{
+			text-align: left;
+		}
+
+		#contador-visitas{
+			position: fixed;
+		    bottom: 0;
+		    right: 0;
+		}
+
+		#iconoTiempo{
+			width: 90px;
+			height: 90px;
+		}
+
+		a{
+			color:#07306E;
+			color:#0ff;
+			color:#0CB7F2;
+			font-weight: bold;
+		}
+
+		@media (max-width: 300px) {
+			#titulo{
+				font-size: 40px;
+				margin-bottom: 40px;
+			}
+		}
+	</style>
+
+
+</head>
+<body>
+
+	<nav class="navbar navbar-inverse" role="navigation">
+	  <div class="navbar-header">
+	    <p class="navbar-text">Brand</p>
+	  </div>
+	</nav>
+
+
+	<div class="container-fluid">
+
+
+		<div id="clima-container" ng-app="myApp" ng-controller="myCtrl" class="hide">
+			<div ng-bind="data.location.name"></div>
+			<div ng-bind="data.current.condition.text"></div>
+			<div class="row">
+				<div id="temperatura" ng-bind="temperatura" class="col-xs-6"></div>
+				<div id="unidadTemp" class="col-xs-6"> 
+					<a id="anchorCelsius" ng-click="cambiarAFahrenheit()" ng-show="mostrarCOcultarK" href="#">°C</a>
+					<a id="anchorKelvin"  ng-click="cambiarACelsius()" ng-hide="mostrarCOcultarK" href="#">°F</a>
+				</div>
+			</div>
+			<div> <img id="iconoTiempo" ng-src="https:{{data.current.condition.icon}}"> </div>	
+		</div>
+
+		<div id="problemaConsultarClima" class="hide">The query could not be performed</div>
+
+		<!-- Animacion de carga-->
+		<div id="nubeLoading" class="preloader" style="opacity: 1; ">
+		  <svg version="1.1" id="cloud" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="10px" height="10px" viewBox="0 0 10 10" enable-background="new 0 0 10 10" xml:space="preserve">
+		    <path fill="none" d="M8.528,5.624H8.247c-0.085,0-0.156-0.068-0.156-0.154c0-0.694-0.563-1.257-1.257-1.257c-0.098,0-0.197,0.013-0.3,0.038C6.493,4.259,6.45,4.252,6.415,4.229C6.38,4.208,6.356,4.172,6.348,4.131C6.117,3.032,5.135,2.235,4.01,2.235c-1.252,0-2.297,0.979-2.379,2.23c-0.004,0.056-0.039,0.108-0.093,0.13C1.076,4.793,0.776,5.249,0.776,5.752c0,0.693,0.564,1.257,1.257,1.257h6.495c0.383,0,0.695-0.31,0.695-0.692S8.911,5.624,8.528,5.624z"></path>
+		  </svg>
+
+		  <div class="rain">
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		  </div>
+		  
+		  <div class="text">
+		    LOADING
+		  </div>
+		</div>
+
+		<div id="contador-visitas">
+			<a href="http://www.contadorvisitasgratis.com" title="contadores de visita"><img src="http://counter2.01counter.com/private/contadorvisitasgratis.php?c=86800326271458e8a05ef8dd79debd44" border="0" title="contadores de visita" alt="contadores de visita"></a>
+	    </div>
+
+
+	</div>
+
+
+</body>
+
+<script>
+
+	var app = angular.module('myApp', [])
+
+	app.config(function($sceDelegateProvider) {
+	    $sceDelegateProvider.resourceUrlWhitelist([
+	        'https://api.apixu.com/**',
+	        'https://whateverorigin.herokuapp.com/**',
+	        'https://ip.nf/me.json'
+	    ]);
+	});
+
+	app.controller('myCtrl', function($scope, $http) {
+
+		navigator.geolocation.getCurrentPosition(
+			function success(position){
+				$scope.lat = position.coords.latitude;
+				$scope.lng = position.coords.longitude;
+				$scope.geolocationSuccess = "latlng=" + $scope.lat + "," + $scope.lng;
+				$scope.googleMapsKey = "&key=AIzaSyBGhvrQh2edYQi7AXdDYCA71Lb_YehPXTk";
+				$scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/geocode/json?" + $scope.geolocationSuccess + $scope.googleMapsKey;
+
+				$http({method: "GET", url: $scope.googleMapsUrl})
+			        .then(function successCallback(response) {
+			          $scope.googleData = response.data;
+			          $scope.addressToConsul = $scope.googleData.results[1].formatted_address
+			          console.log($scope.addressToConsul);
+
+			          $scope.weatherUrl = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.addressToConsul;
+			          console.log($scope.weatherUrl);
+
+			          $http({method: "GET", url: $scope.weatherUrl})
+				        .then(function successCallback(response) {
+				          $scope.status = response.status;
+				          $scope.data = response.data;
+				          $scope.temperatura = Math.trunc($scope.data.current.temp_c);
+				          if($scope.data.error == undefined){
+					        $("#nubeLoading").addClass("hide");
+					        $("#clima-container").removeClass("hide");
+				          } else {
+				          	$("#nubeLoading").addClass("hide");
+				          	$("#problemaConsultarClima").append(": " + $scope.data.error.message);
+				          	$("#problemaConsultarClima").removeClass("hide");
+				          }
+
+				        }, function errorCallback(response) {
+				          $scope.data = response.data || 'Request failed';
+				          $scope.status = response.status;
+				          $("#nubeLoading").addClass("hide");
+				          $("#problemaConsultarClima").removeClass("hide");
+				      });
+
+
+			        }, function errorCallback(response) {
+			    });
+
+				console.log($scope.googleMapsUrl);
+			},function error(){
+				$scope.geolocationError = "Uppss";
+				console.log($scope.geolocationError);
+			});
+
+
+
+		$scope.mostrarCOcultarK = true;
+		$scope.cambiarAFahrenheit  = function(){
+
+			$scope.temperatura = Math.trunc($scope.data.current.temp_f);
+			$scope.mostrarCOcultarK = !($scope.mostrarCOcultarK);
+		};
+		$scope.cambiarACelsius = function(){
+			$scope.temperatura = Math.trunc($scope.data.current.temp_c);
+			$scope.mostrarCOcultarK = !($scope.mostrarCOcultarK);
+		};
+
+		$scope.cambiarCiudad = function(){
+			$scope.weatherUrl = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.data.location.name;
+			console.log($scope.weatherUrl);
+		};
+
+	});
+
+</script>
+
+</html>

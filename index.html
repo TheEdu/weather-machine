@@ -391,28 +391,44 @@
 					    });
 				    });
 
-				/* de esta forma no le funca a mati(?
+
+			$scope.geoLocation = function(){
+    			navigator.geolocation.getCurrentPosition(
+    				function success(position){
+    					$scope.lat = position.coords.latitude;
+    					$scope.lng = position.coords.longitude;
+    					$scope.geolocationSucces = "Win";
+    					console.log($scope.geolocationSucces);
+    				},function error(){
+    					$scope.geolocationError = "Uppss";
+    					console.log($scope.geolocationError);
+    				});
+			}
+
+			$scope.geoLocation();
+
+			/* de esta forma no le funca a mati(?
 
 
-				https://maps.googleapis.com/maps/api/geocode/json?latlng=-34.0629997253418,-59.0531005859375&key=AIzaSyBGhvrQh2edYQi7AXdDYCA71Lb_YehPXTk
-				
-				$scope.cityToConsult = ipData.ip.city;
-		        $scope.urlToConsult = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.cityToConsult;
+			https://maps.googleapis.com/maps/api/geocode/json?latlng=-34.0629997253418,-59.0531005859375&key=AIzaSyBGhvrQh2edYQi7AXdDYCA71Lb_YehPXTk
+			
+			$scope.cityToConsult = ipData.ip.city;
+	        $scope.urlToConsult = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.cityToConsult;
 
-		        $http({method: "GET", url: $scope.urlToConsult})
-			        .then(function(response) {
-			          $scope.status = response.status;
-			          $scope.data = response.data;
-			          //$scope.celsius = response.data.current.temp_c;
-			          $("#nubeLoading").addClass("hide");
-			          $("#clima-container").removeClass("hide");
-			          //$scope.consultaExitosa = true;
-			        }, function(response) {
-			          $scope.data = response.data || 'Request failed';
-			          $scope.status = response.status;
-			          $("#problemaConsultarClima").removeClass("hide");
-			    });
-				*/
+	        $http({method: "GET", url: $scope.urlToConsult})
+		        .then(function(response) {
+		          $scope.status = response.status;
+		          $scope.data = response.data;
+		          //$scope.celsius = response.data.current.temp_c;
+		          $("#nubeLoading").addClass("hide");
+		          $("#clima-container").removeClass("hide");
+		          //$scope.consultaExitosa = true;
+		        }, function(response) {
+		          $scope.data = response.data || 'Request failed';
+		          $scope.status = response.status;
+		          $("#problemaConsultarClima").removeClass("hide");
+		    });
+			*/
 
 		    });
 
