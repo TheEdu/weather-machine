@@ -213,6 +213,12 @@
 		    margin-top: 75px;
 		}
 
+		#problemaConsultarClima{
+			margin:auto;
+			margin-top: -100px;
+			width:180px;
+		}
+
 		#temperatura{
 			padding: 0;
 			text-align: right;
@@ -263,14 +269,14 @@
 <body>
 
 
-	<div class="container-fluid">
+	<div class="container-fluid" ng-app="myApp" ng-controller="myCtrl">
 
 		<div class="titulo">
 			<span>Weather App</span>
 		</div>
 
 
-		<div id="clima-container" ng-app="myApp" ng-controller="myCtrl" class="hide container-mostrado">
+		<div id="clima-container"  class="hide container-mostrado">
 			<div ng-bind="data.location.name"></div>
 			<div ng-bind="data.current.condition.text"></div>
 			<div class="row">
@@ -283,18 +289,19 @@
 			<div> <img id="iconoTiempo" ng-src="https:{{data.current.condition.icon}}"> </div>	
 		</div>
 
-		<div id="problemaConsultarClima" class="hide container-mostrado">The query could not be performed</div>
 		
 		<div id="noAccessToGeoLocation" class="hide container-mostrado">
 			<div class="input-group">
-			    <input id="inputLocation" type="text" class="form-control" placeholder="Location">
+			    <input id="inputLocation" type="text" class="form-control" placeholder="Location" ng-model="inputLocation">
 			    <div class="input-group-btn">
-			      <button id="inputLocationButton" class="btn btn-default" type="submit">
+			      <button id="inputLocationButton" class="btn btn-default" ng-click="weatherConsult()">
 			        <i class="glyphicon glyphicon-search"></i>
 			      </button>
 			    </div>
 			</div>
 		</div>
+
+		<div id="problemaConsultarClima" class="hide">The query could not be performed: <span ng-bind="data.error.message"></span></div>
 
 		<!-- Animacion de carga-->
 		<div id="nubeLoading" class="preloader" style="opacity: 1; ">
@@ -371,7 +378,7 @@
 					        $("#clima-container").removeClass("hide");
 				          } else {
 				          	$("#nubeLoading").addClass("hide");
-				          	$("#problemaConsultarClima").append(": " + $scope.data.error.message);
+				          	//"#problemaConsultarClima").append(": " + $scope.data.error.message);
 				          	$("#problemaConsultarClima").removeClass("hide");
 				          }
 
@@ -394,6 +401,35 @@
 				$("#noAccessToGeoLocation").removeClass("hide");
 			});
 
+
+		$scope.weatherConsult = function(){
+			console.log($scope.inputLocation);
+			$scope.inputUrl = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.inputLocation;
+			$("#noAccessToGeoLocation").addClass("hide");
+			$("#problemaConsultarClima").addClass("hide");
+			$("#nubeLoading").removeClass("hide");
+			$http({method: "GET", url: $scope.inputUrl})
+				.then(function successCallback(response) {
+				  $scope.status = response.status;
+				  $scope.data = response.data;
+				  console.log($scope.data);
+				  $("#nubeLoading").addClass("hide");
+				  if($scope.data.error == undefined){
+				  	$scope.temperatura = Math.trunc($scope.data.current.temp_c);
+				    $("#clima-container").removeClass("hide");
+				  } else {
+				  	$("#noAccessToGeoLocation").removeClass("hide");
+				  	//$("#problemaConsultarClima").append(": " + $scope.data.error.message);
+				  	$("#problemaConsultarClima").removeClass("hide");
+				  }
+
+				}, function errorCallback(response) {
+				  $scope.data = response.data || 'Request failed';
+				  $scope.status = response.status;
+				  $("#nubeLoading").addClass("hide");
+				  $("#problemaConsultarClima").removeClass("hide");
+			});
+		};
 
 
 		$scope.mostrarCOcultarK = true;
