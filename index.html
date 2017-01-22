@@ -379,6 +379,7 @@
 
 	app.controller('myCtrl', function($scope, $http) {
 
+		/*
 		$scope.timer = setTimeout(
 		 	function(){
 		 		$("#nubeLoading").addClass("hide");
@@ -386,10 +387,11 @@
 		 		$("#problemaConsultarClima").addClass("hide");
 				$("#noAccessToGeoLocation").removeClass("hide");
 		 	}, 10000);
+		*/
 
 		navigator.geolocation.getCurrentPosition(
 			function success(position){
-				clearTimeout($scope.timer);
+				//clearTimeout($scope.timer);
 				$scope.lat = position.coords.latitude;
 				$scope.lng = position.coords.longitude;
 				$scope.geolocationSuccess = "latlng=" + $scope.lat + "," + $scope.lng;
@@ -433,7 +435,7 @@
 			    });
 				console.log($scope.googleMapsUrl);
 			},function error(){					    
-	        	clearTimeout($scope.timer);
+	        	//clearTimeout($scope.timer);
 				$scope.geolocationError = "Uppss";
 				console.log($scope.geolocationError);
 				$("#nubeLoading").addClass("hide");
