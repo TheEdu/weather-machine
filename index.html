@@ -368,21 +368,22 @@
 
 <script>
 
+	$("#inputShow").append("entre a js!! ");
+
 	var app = angular.module('myApp', [])
 
 	app.config(function($sceDelegateProvider) {
 	    $sceDelegateProvider.resourceUrlWhitelist([
-	        'https://api.apixu.com/**',
-	        'https://whateverorigin.herokuapp.com/**',
-	        'https://ip.nf/me.json'
+	        'https://api.apixu.com/**'
 	    ]);
 	});
 
 	app.controller('myCtrl', function($scope, $http) {
 
+		$("#inputShow").append("entre al controlador!! ");
 		navigator.geolocation.getCurrentPosition(
 			function success(position){
-				$("#inputShow").html("entre geolocation!! ");
+				$("#inputShow").append("entre geolocation!! ");
 				$scope.lat = position.coords.latitude;
 				$scope.lng = position.coords.longitude;
 				$scope.geolocationSuccess = "latlng=" + $scope.lat + "," + $scope.lng;
