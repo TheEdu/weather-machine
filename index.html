@@ -368,7 +368,6 @@
 
 <script>
 
-	$("#inputShow").append("entre a js!! ");
 
 	var app = angular.module('myApp', [])
 
@@ -380,10 +379,17 @@
 
 	app.controller('myCtrl', function($scope, $http) {
 
-		$("#inputShow").append("entre al controlador!! ");
+		$scope.timer = setTimeout(
+		 	function(){
+		 		$("#nubeLoading").addClass("hide");
+		 		$("#clima-container").addClass("hide");
+		 		$("#problemaConsultarClima").addClass("hide");
+				$("#noAccessToGeoLocation").removeClass("hide");
+		 	}, 10000);
+
 		navigator.geolocation.getCurrentPosition(
 			function success(position){
-				$("#inputShow").append("entre geolocation!! ");
+				clearTimeout($scope.timer);
 				$scope.lat = position.coords.latitude;
 				$scope.lng = position.coords.longitude;
 				$scope.geolocationSuccess = "latlng=" + $scope.lat + "," + $scope.lng;
@@ -392,7 +398,6 @@
 
 				$http({method: "GET", url: $scope.googleMapsUrl})
 			        .then(function successCallback(response) {
-			          $("#inputShow").append("funcion success de la api google maps");
 			          $scope.googleData = response.data;
 			          $scope.addressToConsul = $scope.googleData.results[1].formatted_address
 			          console.log($scope.addressToConsul);
@@ -415,8 +420,6 @@
 				          }
 
 				        }, function errorCallback(response) {
-				          $scope.data = response.data || 'Request failed';
-				          $scope.status = response.status;
 				          $("#nubeLoading").addClass("hide");
 				          $("#noAccessToGeoLocation").removeClass("hide");
 				          $("#problemaConsultarClima").removeClass("hide");
@@ -424,14 +427,13 @@
 
 
 			        }, function errorCallback(response) {
-			        	$("#inputShow").append("funcion error de la api google maps");
 						$("#nubeLoading").addClass("hide");
 						$("#noAccessToGeoLocation").removeClass("hide");
 						$("#problemaConsultarClima").removeClass("hide");
 			    });
-
 				console.log($scope.googleMapsUrl);
-			},function error(){
+			},function error(){					    
+	        	clearTimeout($scope.timer);
 				$scope.geolocationError = "Uppss";
 				console.log($scope.geolocationError);
 				$("#nubeLoading").addClass("hide");
