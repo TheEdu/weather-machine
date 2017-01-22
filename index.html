@@ -49,8 +49,7 @@
 		}
 
 		#cloud {
-		  position: relative;
-		  z-index: 2;
+		  margin-top: 60px;
 		}
 
 		#cloud path {
@@ -183,15 +182,10 @@
     <!-- Pagina principal-->
 	<style type="text/css">
 
-		input{
-			background: transparent;
-			width: 180px;
-			height: 45px;
-			text-align: center;
-			border-radius: 5px;
-		}
 
-		body{
+		.container-fluid{
+			height: 100%;
+			width: 100%;
 			background-color: #111;
 			color: #FFF;
 			font-family: 'Roboto';
@@ -203,29 +197,26 @@
 	    	background-size: cover;
 		}
 
-		#titulo{
-
-			font-size: 50px;
-			margin-bottom: 90px;
-			margin-top: 30px;
+		.titulo{
+			font-size: 40px;
+			margin: 20px 0px;
 
 		}
 
 
-		#clima-container{
+		.container-mostrado{
 		    width:180px;
 		    height:200px;
 		    font-size: 30px;
 		    font-weight: capitalize;
 		    margin:auto;
+		    margin-top: 75px;
 		}
 
 		#problemaConsultarClima{
+			margin:auto;
+			margin-top: -100px;
 			width:180px;
-		    height:200px;
-		    font-size: 30px;
-		    font-weight: capitalize;
-		    margin:auto;
 		}
 
 		#temperatura{
@@ -255,28 +246,47 @@
 			font-weight: bold;
 		}
 
-		@media (max-width: 300px) {
-			#titulo{
-				font-size: 40px;
-				margin-bottom: 40px;
+
+		#inputLocation,#inputLocationButton{
+			border-top: 0px 1px;
+			height: 45px;
+		}
+
+		#noAccessToGeoLocation{
+			margin-top: 125px; 
+		}
+
+		#inputShow{
+			text-decoration: none; 
+			color:#fff;
+			transition: color 2s;
+		}
+
+		@media (max-width: 241px) {
+			.titulo{
+				font-size: 31px;
 			}
 		}
+
 	</style>
 
 
 </head>
 <body>
-	<div class="container-fluid">
 
-		<div>
-			<h1 id="titulo">Weather by IP</h1>
+
+	<div class="container-fluid" ng-app="myApp" ng-controller="myCtrl">
+
+		<div class="titulo">
+			<a id="inputShow" ng-click="inputShow()" href="#">Weather App</a>
 		</div>
 
-		<div id="clima-container" ng-app="myApp" ng-controller="myCtrl" class="hide">
+
+		<div id="clima-container"  class="hide container-mostrado">
 			<div ng-bind="data.location.name"></div>
 			<div ng-bind="data.current.condition.text"></div>
 			<div class="row">
-				<div id="temperatura" ng-bind="data.current.temp_c" class="col-xs-6"></div>
+				<div id="temperatura" ng-bind="temperatura" class="col-xs-6"></div>
 				<div id="unidadTemp" class="col-xs-6"> 
 					<a id="anchorCelsius" ng-click="cambiarAFahrenheit()" ng-show="mostrarCOcultarK" href="#">°C</a>
 					<a id="anchorKelvin"  ng-click="cambiarACelsius()" ng-hide="mostrarCOcultarK" href="#">°F</a>
@@ -285,59 +295,66 @@
 			<div> <img id="iconoTiempo" ng-src="https:{{data.current.condition.icon}}"> </div>	
 		</div>
 
+		
+		<div id="noAccessToGeoLocation" class="hide container-mostrado">
+			<div class="input-group">
+			    <input id="inputLocation" type="text" class="form-control" placeholder="Location" ng-model="inputLocation">
+			    <div class="input-group-btn">
+			      <button id="inputLocationButton" class="btn btn-default" ng-click="weatherConsult()">
+			        <i class="glyphicon glyphicon-search"></i>
+			      </button>
+			    </div>
+			</div>
+		</div>
+
+		<div id="problemaConsultarClima" class="hide">The query could not be performed: <span ng-bind="data.error.message"></span></div>
+
+		<!-- Animacion de carga-->
+		<div id="nubeLoading" class="preloader" style="opacity: 1; ">
+		  <svg version="1.1" id="cloud" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="10px" height="10px" viewBox="0 0 10 10" enable-background="new 0 0 10 10" xml:space="preserve">
+		    <path fill="none" d="M8.528,5.624H8.247c-0.085,0-0.156-0.068-0.156-0.154c0-0.694-0.563-1.257-1.257-1.257c-0.098,0-0.197,0.013-0.3,0.038C6.493,4.259,6.45,4.252,6.415,4.229C6.38,4.208,6.356,4.172,6.348,4.131C6.117,3.032,5.135,2.235,4.01,2.235c-1.252,0-2.297,0.979-2.379,2.23c-0.004,0.056-0.039,0.108-0.093,0.13C1.076,4.793,0.776,5.249,0.776,5.752c0,0.693,0.564,1.257,1.257,1.257h6.495c0.383,0,0.695-0.31,0.695-0.692S8.911,5.624,8.528,5.624z"></path>
+		  </svg>
+
+		  <div class="rain">
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		    <span class="drop"></span>
+		  </div>
+		  
+		  <div class="text">
+		    LOADING
+		  </div>
+		</div>
+
+		<div id="contador-visitas">
+			<a href="http://www.contadorvisitasgratis.com" title="contadores de visita"><img src="http://counter2.01counter.com/private/contadorvisitasgratis.php?c=86800326271458e8a05ef8dd79debd44" border="0" title="contadores de visita" alt="contadores de visita"></a>
+	    </div>
+
+
 	</div>
-
-	<div id="problemaConsultarClima" class="hide">The query could not be performed</div>
-
-	<!-- Animacion de carga-->
-	<div id="nubeLoading" class="preloader" style="opacity: 1; ">
-	<!--
-	  <svg version="1.1" id="sun" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="10px" height="10px" viewBox="0 0 10 10" enable-background="new 0 0 10 10" xml:space="preserve" style="opacity: 1; margin-left: 0px; margin-top: 0px;">
-	    <g>
-	      <path fill="none" d="M6.942,3.876c-0.4-0.692-1.146-1.123-1.946-1.123c-0.392,0-0.779,0.104-1.121,0.301c-1.072,0.619-1.44,1.994-0.821,3.067C3.454,6.815,4.2,7.245,5,7.245c0.392,0,0.779-0.104,1.121-0.301C6.64,6.644,7.013,6.159,7.167,5.581C7.321,5,7.243,4.396,6.942,3.876z M6.88,5.505C6.745,6.007,6.423,6.427,5.973,6.688C5.676,6.858,5.34,6.948,5,6.948c-0.695,0-1.343-0.373-1.69-0.975C2.774,5.043,3.093,3.849,4.024,3.312C4.32,3.14,4.656,3.05,4.996,3.05c0.695,0,1.342,0.374,1.69,0.975C6.946,4.476,7.015,5,6.88,5.505z"></path>
-	      <path fill="none" d="M8.759,2.828C8.718,2.757,8.626,2.732,8.556,2.774L7.345,3.473c-0.07,0.041-0.094,0.132-0.053,0.202C7.319,3.723,7.368,3.75,7.419,3.75c0.025,0,0.053-0.007,0.074-0.02l1.211-0.699C8.774,2.989,8.8,2.899,8.759,2.828z"></path>
-	      <path fill="none" d="M1.238,7.171c0.027,0.047,0.077,0.074,0.128,0.074c0.025,0,0.051-0.008,0.074-0.02l1.211-0.699c0.071-0.041,0.095-0.133,0.054-0.203S2.574,6.228,2.503,6.269l-1.21,0.699C1.221,7.009,1.197,7.101,1.238,7.171z"></path>
-	      <path fill="none" d="M6.396,2.726c0.052,0,0.102-0.026,0.13-0.075l0.349-0.605C6.915,1.976,6.89,1.885,6.819,1.844c-0.07-0.042-0.162-0.017-0.202,0.054L6.269,2.503C6.228,2.574,6.251,2.666,6.322,2.706C6.346,2.719,6.371,2.726,6.396,2.726z"></path>
-			  <path fill="none" d="M3.472,7.347L3.123,7.952c-0.041,0.07-0.017,0.162,0.054,0.203C3.2,8.169,3.226,8.175,3.25,8.175c0.052,0,0.102-0.027,0.129-0.074l0.349-0.605c0.041-0.07,0.017-0.16-0.054-0.203C3.603,7.251,3.513,7.276,3.472,7.347z"></path>
-			  <path fill="none" d="M3.601,2.726c0.025,0,0.051-0.007,0.074-0.02C3.746,2.666,3.77,2.574,3.729,2.503l-0.35-0.604C3.338,1.828,3.248,1.804,3.177,1.844C3.106,1.886,3.082,1.976,3.123,2.047l0.35,0.604C3.5,2.7,3.549,2.726,3.601,2.726z"></path>
-			  <path fill="none" d="M6.321,7.292c-0.07,0.043-0.094,0.133-0.054,0.203l0.351,0.605c0.026,0.047,0.076,0.074,0.127,0.074c0.025,0,0.051-0.006,0.074-0.02c0.072-0.041,0.096-0.133,0.055-0.203l-0.35-0.605C6.483,7.276,6.393,7.253,6.321,7.292z"></path>
-			  <path fill="none" d="M2.202,5.146c0.082,0,0.149-0.065,0.149-0.147S2.284,4.851,2.202,4.851H1.503c-0.082,0-0.148,0.066-0.148,0.148s0.066,0.147,0.148,0.147H2.202z"></path>
-			  <path fill="none" d="M8.493,4.851H7.794c-0.082,0-0.148,0.066-0.148,0.148s0.066,0.147,0.148,0.147l0,0h0.699c0.082,0,0.148-0.065,0.148-0.147S8.575,4.851,8.493,4.851L8.493,4.851z"></path>
-			  <path fill="none" d="M5.146,2.203V0.805c0-0.082-0.066-0.148-0.148-0.148c-0.082,0-0.148,0.066-0.148,0.148v1.398c0,0.082,0.066,0.149,0.148,0.149C5.08,2.352,5.146,2.285,5.146,2.203z"></path>
-			  <path fill="none" d="M4.85,7.796v1.396c0,0.082,0.066,0.15,0.148,0.15c0.082,0,0.148-0.068,0.148-0.15V7.796c0-0.082-0.066-0.148-0.148-0.148C4.917,7.647,4.85,7.714,4.85,7.796z"></path>
-			  <path fill="none" d="M2.651,3.473L1.44,2.774C1.369,2.732,1.279,2.757,1.238,2.828C1.197,2.899,1.221,2.989,1.292,3.031l1.21,0.699c0.023,0.013,0.049,0.02,0.074,0.02c0.051,0,0.101-0.026,0.129-0.075C2.747,3.604,2.722,3.514,2.651,3.473z"></path>
-			  <path fill="none" d="M8.704,6.968L7.493,6.269c-0.07-0.041-0.162-0.016-0.201,0.055c-0.041,0.07-0.018,0.162,0.053,0.203l1.211,0.699c0.023,0.012,0.049,0.02,0.074,0.02c0.051,0,0.102-0.027,0.129-0.074C8.8,7.101,8.776,7.009,8.704,6.968z"></path>
-		  </g>
-	  </svg>
-	-->
-	  <svg version="1.1" id="cloud" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="10px" height="10px" viewBox="0 0 10 10" enable-background="new 0 0 10 10" xml:space="preserve">
-	    <path fill="none" d="M8.528,5.624H8.247c-0.085,0-0.156-0.068-0.156-0.154c0-0.694-0.563-1.257-1.257-1.257c-0.098,0-0.197,0.013-0.3,0.038C6.493,4.259,6.45,4.252,6.415,4.229C6.38,4.208,6.356,4.172,6.348,4.131C6.117,3.032,5.135,2.235,4.01,2.235c-1.252,0-2.297,0.979-2.379,2.23c-0.004,0.056-0.039,0.108-0.093,0.13C1.076,4.793,0.776,5.249,0.776,5.752c0,0.693,0.564,1.257,1.257,1.257h6.495c0.383,0,0.695-0.31,0.695-0.692S8.911,5.624,8.528,5.624z"></path>
-	  </svg>
-
-	  <div class="rain">
-	    <span class="drop"></span>
-	    <span class="drop"></span>
-	    <span class="drop"></span>
-	    <span class="drop"></span>
-	    <span class="drop"></span>
-	    <span class="drop"></span>
-	    <span class="drop"></span>
-	    <span class="drop"></span>
-	    <span class="drop"></span>
-	    <span class="drop"></span>
-	  </div>
-	  
-	  <div class="text">
-	    LOADING
-	  </div>
-	</div>
-
-	<div id="contador-visitas">
-		<a href="http://www.contadorvisitasgratis.com" title="contadores de visita"><img src="http://counter2.01counter.com/private/contadorvisitasgratis.php?c=86800326271458e8a05ef8dd79debd44" border="0" title="contadores de visita" alt="contadores de visita"></a>
-    </div>
 
 
 </body>
+
+<script type="text/javascript">
+
+	function randomRGB(){
+		return Math.floor(((255+1)*Math.random()));
+	};
+
+	function changeRandomColor(){
+		var rgbChange = "rgb(" + randomRGB() + "," + randomRGB() + "," + randomRGB() + ")";
+		$("#inputShow").css("color", rgbChange);
+	};
+	setInterval(changeRandomColor, 2000);
+</script>
 
 <script>
 
@@ -353,95 +370,97 @@
 
 	app.controller('myCtrl', function($scope, $http) {
 
-		$scope.getIpUrl = "https://ip.nf/me.json";
+		navigator.geolocation.getCurrentPosition(
+			function success(position){
+				$scope.lat = position.coords.latitude;
+				$scope.lng = position.coords.longitude;
+				$scope.geolocationSuccess = "latlng=" + $scope.lat + "," + $scope.lng;
+				$scope.googleMapsKey = "&key=AIzaSyBGhvrQh2edYQi7AXdDYCA71Lb_YehPXTk";
+				$scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/geocode/json?" + $scope.geolocationSuccess + $scope.googleMapsKey;
 
-		$http.get($scope.getIpUrl)
-		    .success(function(ipData){
-		        //test
-		        $scope.ipTest = ipData.ip.ip;
-		        $scope.ipUrlTest = "http://ip-api.com/json/" + $scope.ipTest;
-		        $scope.ipHttpsUrlTest = "https://whateverorigin.herokuapp.com/get?url=" +
-		        encodeURIComponent($scope.ipUrlTest) + "&callback=JSON_CALLBACK";
+				$http({method: "GET", url: $scope.googleMapsUrl})
+			        .then(function successCallback(response) {
+			          $scope.googleData = response.data;
+			          $scope.addressToConsul = $scope.googleData.results[1].formatted_address
+			          console.log($scope.addressToConsul);
 
-				$http.jsonp($scope.ipHttpsUrlTest)
-				    .success(function(fullIpdata){
-				    	$scope.json = JSON.parse(fullIpdata.contents);
-				        $scope.weatherUrl = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.json.city;
-				        console.log($scope.weatherUrl);
+			          $scope.weatherUrl = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.addressToConsul;
+			          console.log($scope.weatherUrl);
 
-				        $http({method: "GET", url: $scope.weatherUrl})
-					        .then(function successCallback(response) {
-					          $scope.status = response.status;
-					          console.log(response);
-					          $scope.data = response.data;
-					          if($scope.data.error == undefined){
-						        $("#nubeLoading").addClass("hide");
-						        $("#clima-container").removeClass("hide");
-					          } else {
-					          	$("#nubeLoading").addClass("hide");
-					          	$("#problemaConsultarClima").append(": " + $scope.data.error.message);
-					          	$("#problemaConsultarClima").removeClass("hide");
-					          }
+			          $http({method: "GET", url: $scope.weatherUrl})
+				        .then(function successCallback(response) {
+				          $scope.status = response.status;
+				          $scope.data = response.data;
+				          $scope.temperatura = Math.trunc($scope.data.current.temp_c);
+				          if($scope.data.error == undefined){
+					        $("#nubeLoading").addClass("hide");
+					        $("#clima-container").removeClass("hide");
+				          } else {
+				          	$("#nubeLoading").addClass("hide");
+				          	//"#problemaConsultarClima").append(": " + $scope.data.error.message);
+				          	$("#problemaConsultarClima").removeClass("hide");
+				          }
 
-					        }, function errorCallback(response) {
-					          $scope.data = response.data || 'Request failed';
-					          $scope.status = response.status;
-					          $("#nubeLoading").addClass("hide");
-					          $("#problemaConsultarClima").removeClass("hide");
-					    });
-				    });
-
-
-			$scope.geoLocation = function(){
-    			navigator.geolocation.getCurrentPosition(
-    				function success(position){
-    					$scope.lat = position.coords.latitude;
-    					$scope.lng = position.coords.longitude;
-    					$scope.geolocationSucces = "Win";
-    					console.log($scope.geolocationSucces);
-    				},function error(){
-    					$scope.geolocationError = "Uppss";
-    					console.log($scope.geolocationError);
-    				});
-			}
-
-			$scope.geoLocation();
-
-			/* de esta forma no le funca a mati(?
+				        }, function errorCallback(response) {
+				          $scope.data = response.data || 'Request failed';
+				          $scope.status = response.status;
+				          $("#nubeLoading").addClass("hide");
+				          $("#noAccessToGeoLocation").removeClass("hide");
+				          $("#problemaConsultarClima").removeClass("hide");
+				      });
 
 
-			https://maps.googleapis.com/maps/api/geocode/json?latlng=-34.0629997253418,-59.0531005859375&key=AIzaSyBGhvrQh2edYQi7AXdDYCA71Lb_YehPXTk
-			
-			$scope.cityToConsult = ipData.ip.city;
-	        $scope.urlToConsult = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.cityToConsult;
+			        }, function errorCallback(response) {
+			    });
 
-	        $http({method: "GET", url: $scope.urlToConsult})
-		        .then(function(response) {
-		          $scope.status = response.status;
-		          $scope.data = response.data;
-		          //$scope.celsius = response.data.current.temp_c;
-		          $("#nubeLoading").addClass("hide");
-		          $("#clima-container").removeClass("hide");
-		          //$scope.consultaExitosa = true;
-		        }, function(response) {
-		          $scope.data = response.data || 'Request failed';
-		          $scope.status = response.status;
-		          $("#problemaConsultarClima").removeClass("hide");
-		    });
-			*/
+				console.log($scope.googleMapsUrl);
+			},function error(){
+				$scope.geolocationError = "Uppss";
+				console.log($scope.geolocationError);
+				$("#nubeLoading").addClass("hide");
+				$("#noAccessToGeoLocation").removeClass("hide");
+			});
 
-		    });
 
+		$scope.weatherConsult = function(){
+			console.log($scope.inputLocation);
+			$scope.inputUrl = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.inputLocation;
+			$("#noAccessToGeoLocation").addClass("hide");
+			$("#problemaConsultarClima").addClass("hide");
+			$("#nubeLoading").removeClass("hide");
+			$http({method: "GET", url: $scope.inputUrl})
+				.then(function successCallback(response) {
+				  $scope.status = response.status;
+				  $scope.data = response.data;
+				  console.log($scope.data);
+				  $("#nubeLoading").addClass("hide");
+				  if($scope.data.error == undefined){
+				  	$scope.temperatura = Math.trunc($scope.data.current.temp_c);
+				    $("#clima-container").removeClass("hide");
+				  } else {
+				  	$("#noAccessToGeoLocation").removeClass("hide");
+				  	//$("#problemaConsultarClima").append(": " + $scope.data.error.message);
+				  	$("#problemaConsultarClima").removeClass("hide");
+				  }
+
+				}, function errorCallback(response) {
+				  $scope.data = response.data || 'Request failed';
+				  $scope.status = response.status;
+				  $("#nubeLoading").addClass("hide");
+				  $("#noAccessToGeoLocation").removeClass("hide");
+				  $("#problemaConsultarClima").removeClass("hide");
+			});
+		};
 
 
 		$scope.mostrarCOcultarK = true;
 		$scope.cambiarAFahrenheit  = function(){
-			$scope.celsius = $scope.data.current.temp_c;
-			$scope.data.current.temp_c = Math.trunc((9/5)*($scope.celsius ) + 32);
+
+			$scope.temperatura = Math.trunc($scope.data.current.temp_f);
 			$scope.mostrarCOcultarK = !($scope.mostrarCOcultarK);
 		};
 		$scope.cambiarACelsius = function(){
-			$scope.data.current.temp_c = $scope.celsius;
+			$scope.temperatura = Math.trunc($scope.data.current.temp_c);
 			$scope.mostrarCOcultarK = !($scope.mostrarCOcultarK);
 		};
 
@@ -449,6 +468,13 @@
 			$scope.weatherUrl = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.data.location.name;
 			console.log($scope.weatherUrl);
 		};
+
+		$scope.inputShow = function(){
+			$("#clima-container").addClass("hide");
+			$("#nubeLoading").addClass("hide");
+			$("#problemaConsultarClima").addClass("hide");
+			$("#noAccessToGeoLocation").removeClass("hide");
+		}
 
 	});
 
