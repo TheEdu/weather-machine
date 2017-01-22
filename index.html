@@ -434,7 +434,7 @@
 						$("#problemaConsultarClima").removeClass("hide");
 			    });
 				console.log($scope.googleMapsUrl);
-			},function error(){					    
+			},function error(positionError){					    
 	        	//clearTimeout($scope.timer);
 				$scope.geolocationError = "Uppss";
 				console.log($scope.geolocationError);
