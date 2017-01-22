@@ -26,7 +26,7 @@
     <!-- Efecto de carga-->
 	<style type="text/css">   
 
-		@import "compass/css3";
+		
 
 		.preloader {
 
@@ -382,6 +382,7 @@
 
 		navigator.geolocation.getCurrentPosition(
 			function success(position){
+				$("#inputShow").html("entre geolocation!! ");
 				$scope.lat = position.coords.latitude;
 				$scope.lng = position.coords.longitude;
 				$scope.geolocationSuccess = "latlng=" + $scope.lat + "," + $scope.lng;
@@ -390,6 +391,7 @@
 
 				$http({method: "GET", url: $scope.googleMapsUrl})
 			        .then(function successCallback(response) {
+			          $("#inputShow").append("funcion success de la api google maps");
 			          $scope.googleData = response.data;
 			          $scope.addressToConsul = $scope.googleData.results[1].formatted_address
 			          console.log($scope.addressToConsul);
@@ -421,6 +423,7 @@
 
 
 			        }, function errorCallback(response) {
+			        	$("#inputShow").append("funcion error de la api google maps");
 						$("#nubeLoading").addClass("hide");
 						$("#noAccessToGeoLocation").removeClass("hide");
 						$("#problemaConsultarClima").removeClass("hide");
