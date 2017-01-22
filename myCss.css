@@ -1,0 +1,106 @@
+
+    <!-- Pagina principal-->
+	<style type="text/css">
+
+		body{
+			background-color: #111;
+		}
+
+		.container-fluid{
+			height: 100%;
+			width: 100%;
+			background-color: #111;
+			color: #FFF;
+			font-family: 'Roboto';
+			text-align: center;
+			background-image: url("weather-images/weather-angular.jpg");
+			background-repeat: no-repeat;
+			background-position: center;
+			background-attachment: fixed;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+
+			/* http://wallpapercave.com/wp/qQa5Pd7.jpg 
+			background-repeat: no-repeat;
+			background-position: center;
+	    	background-size: cover;*/
+		}
+
+		.titulo{
+			font-size: 40px;
+			margin: 20px 0px;
+
+		}
+
+
+		.container-mostrado{
+		    width:180px;
+		    height:200px;
+		    font-size: 30px;
+		    font-weight: capitalize;
+		    margin:auto;
+		    margin-top: 75px;
+		}
+
+		#problemaConsultarClima{
+			margin:auto;
+			margin-top: -100px;
+			width:180px;
+		}
+
+		#temperatura{
+			padding: 0;
+			text-align: right;
+		}
+
+		#unidadTemp{
+			text-align: left;
+		}
+
+		#contador-visitas{
+			position: fixed;
+		    bottom: 0;
+		    right: 0;
+		}
+
+		#iconoTiempo{
+			width: 90px;
+			height: 90px;
+		}
+
+		a{
+			color:#07306E;
+			color:#0ff;
+			color:#0CB7F2;
+			font-weight: bold;
+		}
+
+
+		#inputLocation,#inputLocationButton{
+			border-top: 0px 1px;
+			height: 45px;
+		}
+
+		#noAccessToGeoLocation{
+			margin-top: 125px; 
+		}
+
+		#inputShow{
+			text-decoration: none; 
+			color:#fff;
+			float: right;
+		}
+
+		#sun{
+			float:left;
+		}
+
+		@media (max-width: 241px) {
+			.titulo{
+				font-size: 31px;
+			}
+		}
+
+	</style>

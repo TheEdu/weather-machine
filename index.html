@@ -22,8 +22,9 @@
 
 	<!-- contador de visitas-->
 	<script type="text/javascript" src="http://counter2.01counter.com/private/countertab.js?c=86800326271458e8a05ef8dd79debd44"></script>
-        
-    <!-- Efecto de carga-->
+      
+
+    <!-- Efecto de carga-->  
 	<style type="text/css">   
 
 		
@@ -177,113 +178,13 @@
 			color: #FFF;
 			width: 200px;
 		}
-	</style>        
-
-    <!-- Pagina principal-->
-	<style type="text/css">
-
-		body{
-			background-color: #111;
-		}
-
-		.container-fluid{
-			height: 100%;
-			width: 100%;
-			background-color: #111;
-			color: #FFF;
-			font-family: 'Roboto';
-			text-align: center;
-			background-image: url("weather-images/weather-angular.jpg");
-			background-repeat: no-repeat;
-			background-position: center;
-			background-attachment: fixed;
-			-webkit-background-size: cover;
-			-moz-background-size: cover;
-			-o-background-size: cover;
-			background-size: cover;
-
-			/* http://wallpapercave.com/wp/qQa5Pd7.jpg 
-			background-repeat: no-repeat;
-			background-position: center;
-	    	background-size: cover;*/
-		}
-
-		.titulo{
-			font-size: 40px;
-			margin: 20px 0px;
-
-		}
+	</style>       
 
 
-		.container-mostrado{
-		    width:180px;
-		    height:200px;
-		    font-size: 30px;
-		    font-weight: capitalize;
-		    margin:auto;
-		    margin-top: 75px;
-		}
-
-		#problemaConsultarClima{
-			margin:auto;
-			margin-top: -100px;
-			width:180px;
-		}
-
-		#temperatura{
-			padding: 0;
-			text-align: right;
-		}
-
-		#unidadTemp{
-			text-align: left;
-		}
-
-		#contador-visitas{
-			position: fixed;
-		    bottom: 0;
-		    right: 0;
-		}
-
-		#iconoTiempo{
-			width: 90px;
-			height: 90px;
-		}
-
-		a{
-			color:#07306E;
-			color:#0ff;
-			color:#0CB7F2;
-			font-weight: bold;
-		}
+    <!-- myCss-->
+    <link rel="stylesheet" href="myCss.css">
 
 
-		#inputLocation,#inputLocationButton{
-			border-top: 0px 1px;
-			height: 45px;
-		}
-
-		#noAccessToGeoLocation{
-			margin-top: 125px; 
-		}
-
-		#inputShow{
-			text-decoration: none; 
-			color:#fff;
-			float: right;
-		}
-
-		#sun{
-			float:left;
-		}
-
-		@media (max-width: 241px) {
-			.titulo{
-				font-size: 31px;
-			}
-		}
-
-	</style>
 
 
 </head>
@@ -380,141 +281,8 @@
 
 </body>
 
+<!-- myJS-->
+<script type="text/javascript" src="myJS.js"></script>
 
-<script>
-
-
-	var app = angular.module('myApp', [])
-
-	app.config(function($sceDelegateProvider) {
-	    $sceDelegateProvider.resourceUrlWhitelist([
-	        'https://api.apixu.com/**'
-	    ]);
-	});
-
-	app.controller('myCtrl', function($scope, $http) {
-
-		/*
-		$scope.timer = setTimeout(
-		 	function(){
-		 		$("#nubeLoading").addClass("hide");
-		 		$("#clima-container").addClass("hide");
-		 		$("#problemaConsultarClima").addClass("hide");
-				$("#noAccessToGeoLocation").removeClass("hide");
-		 	}, 10000);
-		*/
-
-		navigator.geolocation.getCurrentPosition(
-			function success(position){
-				//clearTimeout($scope.timer);
-				$scope.lat = position.coords.latitude;
-				$scope.lng = position.coords.longitude;
-				$scope.geolocationSuccess = "latlng=" + $scope.lat + "," + $scope.lng;
-				$scope.googleMapsKey = "&key=AIzaSyBGhvrQh2edYQi7AXdDYCA71Lb_YehPXTk";
-				$scope.googleMapsUrl = "https://maps.googleapis.com/maps/api/geocode/json?" + $scope.geolocationSuccess + $scope.googleMapsKey;
-
-				$http({method: "GET", url: $scope.googleMapsUrl})
-			        .then(function successCallback(response) {
-			          $scope.googleData = response.data;
-			          $scope.addressToConsul = $scope.googleData.results[1].formatted_address
-			          console.log($scope.addressToConsul);
-
-			          $scope.weatherUrl = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.addressToConsul;
-			          console.log($scope.weatherUrl);
-
-			          $http({method: "GET", url: $scope.weatherUrl})
-				        .then(function successCallback(response) {
-				          $scope.status = response.status;
-				          $scope.data = response.data;
-				          $scope.temperatura = Math.trunc($scope.data.current.temp_c);
-				          if($scope.data.error == undefined){
-					        $("#nubeLoading").addClass("hide");
-					        $("#clima-container").removeClass("hide");
-					        $("#noAccessToGeoLocation").addClass("hide");
-				          } else {
-				          	$("#nubeLoading").addClass("hide");
-				          	//"#problemaConsultarClima").append(": " + $scope.data.error.message);
-				          	$("#problemaConsultarClima").removeClass("hide");
-				          }
-
-				        }, function errorCallback(response) {
-				          $("#nubeLoading").addClass("hide");
-				          $("#noAccessToGeoLocation").removeClass("hide");
-				          $("#problemaConsultarClima").removeClass("hide");
-				      });
-
-
-			        }, function errorCallback(response) {
-						$("#nubeLoading").addClass("hide");
-						$("#noAccessToGeoLocation").removeClass("hide");
-						$("#problemaConsultarClima").removeClass("hide");
-			    });
-				console.log($scope.googleMapsUrl);
-			},function error(positionError){					    
-	        	//clearTimeout($scope.timer);
-				$scope.geolocationError = "Uppss";
-				console.log($scope.geolocationError);
-				$("#nubeLoading").addClass("hide");
-				$("#noAccessToGeoLocation").removeClass("hide");
-			});
-
-
-		$scope.weatherConsult = function(){
-			console.log($scope.inputLocation);
-			$scope.inputUrl = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.inputLocation;
-			$("#noAccessToGeoLocation").addClass("hide");
-			$("#problemaConsultarClima").addClass("hide");
-			$("#nubeLoading").removeClass("hide");
-			$http({method: "GET", url: $scope.inputUrl})
-				.then(function successCallback(response) {
-				  $scope.status = response.status;
-				  $scope.data = response.data;
-				  console.log($scope.data);
-				  $("#nubeLoading").addClass("hide");
-				  if($scope.data.error == undefined){
-				  	$scope.temperatura = Math.trunc($scope.data.current.temp_c);
-				    $("#clima-container").removeClass("hide");
-				  } else {
-				  	$("#noAccessToGeoLocation").removeClass("hide");
-				  	//$("#problemaConsultarClima").append(": " + $scope.data.error.message);
-				  	$("#problemaConsultarClima").removeClass("hide");
-				  }
-
-				}, function errorCallback(response) {
-				  $scope.data = response.data || 'Request failed';
-				  $scope.status = response.status;
-				  $("#nubeLoading").addClass("hide");
-				  $("#noAccessToGeoLocation").removeClass("hide");
-				  $("#problemaConsultarClima").removeClass("hide");
-			});
-		};
-
-
-		$scope.mostrarCOcultarK = true;
-		$scope.cambiarAFahrenheit  = function(){
-
-			$scope.temperatura = Math.trunc($scope.data.current.temp_f);
-			$scope.mostrarCOcultarK = !($scope.mostrarCOcultarK);
-		};
-		$scope.cambiarACelsius = function(){
-			$scope.temperatura = Math.trunc($scope.data.current.temp_c);
-			$scope.mostrarCOcultarK = !($scope.mostrarCOcultarK);
-		};
-
-		$scope.cambiarCiudad = function(){
-			$scope.weatherUrl = "https://api.apixu.com/v1/current.json?key=ebe2ef6d64304fbabb5182645171801&q=" + $scope.data.location.name;
-			console.log($scope.weatherUrl);
-		};
-
-		$scope.inputShow = function(){
-			$("#clima-container").addClass("hide");
-			$("#nubeLoading").addClass("hide");
-			$("#problemaConsultarClima").addClass("hide");
-			$("#noAccessToGeoLocation").removeClass("hide");
-		}
-
-	});
-
-</script>
 
 </html>
